@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from './services/auth/auth.guard';
 import { MyToolbarModule } from './components/my-toolbar/my-toolbar.module';
+import { ListServiceIndustryModule } from './components/list-service-industry/list-service-industry.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,6 +34,7 @@ import { MyToolbarModule } from './components/my-toolbar/my-toolbar.module';
     RegisterModule,
     DashboardModule,
     MyToolbarModule,
+    ListServiceIndustryModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
