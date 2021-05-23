@@ -1,0 +1,11 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.main{
+  margin-bottom: 40px;
+}
+
+mat-progress-bar {
+  margin-bottom: 40px;
+}

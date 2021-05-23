@@ -4,6 +4,7 @@ import { RegisterComponent } from './register.component';
 import { AngularMaterialModule } from '../../angular-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [RegisterComponent],
@@ -13,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
 })
 export class RegisterModule {}

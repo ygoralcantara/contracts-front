@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
+import { StateService } from '../../services/state/state.service';
 
 @Component({
   selector: 'app-signin',
@@ -16,6 +18,8 @@ export class SigninComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private stateService: StateService,
+    private snackBar: MatSnackBar,
   ) {
     this.loginFormGroup = this.fb.group({
       username: ['', Validators.required],
@@ -24,25 +28,36 @@ export class SigninComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    if (this.authService.isAuthenticated()) {
-      await this.router.navigate(['dashboard']);
-    }
+    // if (this.authService.isAuthenticated()) {
+    //   await this.router.navigate(['dashboard']);
+    // }
   }
 
   async onSubmit() {
+    this.stateService.setIsLoading(true);
     const values = this.loginFormGroup.value;
 
     if (values.username && values.password) {
       this.authService.login(values.username, values.password).subscribe(
         (data) => this.loginSuccess(data.data.access_token),
-        (error) => (this.loginInvalid = true),
+        (error) => this.loginFailed(),
       );
     }
+    setTimeout(() => this.stateService.setIsLoading(false), 1000);
   }
 
   async loginSuccess(accessToken: string): Promise<void> {
-    console.log(accessToken);
     this.authService.setAccessToken(accessToken);
     await this.router.navigate(['dashboard']);
+    this.snackBar.open('Login realizado com sucesso!', 'Undo', {
+      duration: 2000,
+    });
+  }
+
+  loginFailed(): void {
+    this.loginInvalid = true;
+    this.snackBar.open('Username e/ou senha incorretos!', 'Undo', {
+      duration: 2000,
+    });
   }
 }

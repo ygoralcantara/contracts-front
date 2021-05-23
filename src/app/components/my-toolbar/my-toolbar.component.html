@@ -1,0 +1,11 @@
+<mat-toolbar color="primary" [ngClass]="{'main': !isLoading}">
+  <mat-toolbar-row>
+    <span>Contracts</span>
+    <span class="spacer"></span>
+    <a mat-button routerLink="/register">Sign Up</a>
+    <a mat-button routerLink="/signin">Sign In</a>
+    <a mat-button routerLink="/dashboard">Dashboard</a>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+

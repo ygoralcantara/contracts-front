@@ -13,6 +13,7 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from './services/auth/auth.guard';
+import { MyToolbarModule } from './components/my-toolbar/my-toolbar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,13 +25,14 @@ import { AuthGuard } from './services/auth/auth.guard';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    SigninModule,
-    RegisterModule,
-    DashboardModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {},
     }),
+    SigninModule,
+    RegisterModule,
+    DashboardModule,
+    MyToolbarModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
