@@ -1,4 +1,7 @@
-.table {
-  width: 800px;
+.mat-header-row {
+  width: 100px;
 }
 
+.mat-row {
+  width: 100px;
+}

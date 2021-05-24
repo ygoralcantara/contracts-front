@@ -13,6 +13,7 @@ import { StateService } from '../../services/state/state.service';
 export class SigninComponent implements OnInit {
   loginFormGroup: FormGroup;
   loginInvalid: boolean = false;
+  authenticated: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,9 +29,16 @@ export class SigninComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    // if (this.authService.isAuthenticated()) {
-    //   await this.router.navigate(['dashboard']);
-    // }
+    this.authService.isAuthenticated().subscribe(
+      (data) => {
+        this.authenticated = data;
+      },
+      (error) => console.error(error),
+    );
+
+    if (this.authenticated) {
+      await this.router.navigate(['dashboard']);
+    }
   }
 
   async onSubmit() {

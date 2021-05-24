@@ -6,6 +6,7 @@ import { UserService } from '../../services/user/user.service';
 import { CreateUserBody, User } from '../../services/user/user.interface';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RegisterComponent implements OnInit {
   registerFormGroup: FormGroup;
+  authenticated: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -21,6 +23,7 @@ export class RegisterComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
+    private authService: AuthService,
   ) {
     this.registerFormGroup = this.fb.group(
       {
@@ -41,7 +44,18 @@ export class RegisterComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  async ngOnInit(): Promise<void> {
+    this.authService.isAuthenticated().subscribe(
+      (data) => {
+        this.authenticated = data;
+      },
+      (error) => console.error(error),
+    );
+
+    if (this.authenticated) {
+      await this.router.navigate(['dashboard']);
+    }
+  }
 
   onSubmit() {
     this.stateService.setIsLoading(true);

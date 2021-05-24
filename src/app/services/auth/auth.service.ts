@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthLoginBody, AuthLoginResponse } from './auth.interface';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
@@ -10,8 +10,11 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   private readonly loginUrl = 'auth/login';
+  authenticated: BehaviorSubject<boolean>;
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {}
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
+    this.authenticated = new BehaviorSubject<boolean>(false);
+  }
 
   getAccessToken(): string | null {
     return localStorage.getItem('access_token');
@@ -21,11 +24,12 @@ export class AuthService {
     localStorage.setItem('access_token', accessToken);
   }
 
-  isAuthenticated(): boolean {
+  isAuthenticated(): Observable<boolean> {
     const token = this.getAccessToken();
-    console.log(token);
+    const auth = token ? !this.jwtHelper.isTokenExpired(token) : false;
+    this.authenticated.next(auth);
 
-    return token ? !this.jwtHelper.isTokenExpired(token) : false;
+    return this.authenticated.asObservable();
   }
 
   login(username: string, password: string): Observable<AuthLoginResponse> {
